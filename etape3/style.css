@@ -1,0 +1,64 @@
+/* Conteneur principal - centrage du tableau (Slide: sélecteurs CSS, propriété text-align/margin) */
+#table_container {
+    font-family: Calibri, Arial, sans-serif;
+    width: 60%;
+    margin: 40px auto;
+}
+/* Style du titre */
+h2 {
+    text-align: center;
+    color: #333;
+}
+/* Style général du tableau (Slide: sélecteurs CSS, propriété border) */
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+/* Style des cellules */
+th, td {
+    border: 1px solid #aaa;
+    padding: 8px 12px;
+    text-align: left;
+}
+/* En-tête du tableau */
+thead tr {
+    background-color: #4472C4;
+    color: white;
+}
+/* Lignes alternées */
+tbody tr:nth-child(even) {
+    background-color: #dce6f1;
+}
+tbody tr:hover {
+    background-color: #bdd7ee;
+}
+/* Colonne numéro - petite largeur */
+.col_number {
+    width: 40px;
+    text-align: center;
+}
+/* Colonne checkbox - centrée */
+.col_chkbox {
+    width: 40px;
+    text-align: center;
+}
+/* Colonnes texte */
+.col_text {
+    text-align: left;
+}
+/* Bouton Console Tableau (Slide: sélecteurs CSS - élément button) */
+button {
+    margin-top: 12px;
+    padding: 8px 18px;
+    background-color: #4472C4;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-family: Calibri, Arial, sans-serif;
+    font-size: 14px;
+    font-weight: bold;
+}
+button:hover {
+    background-color: #2f548e;
+}

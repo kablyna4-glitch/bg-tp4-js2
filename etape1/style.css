@@ -1,0 +1,39 @@
+/* TP4 - Etape 1 : Tableau statique */
+
+/* Sélecteur d'identifiant #table_container — slide 15 (Sélecteurs CSS - sélecteur d'id)
+   Propriété font-family : liste de polices (Calibri en premier) — slide 20 (CSS - Polices)
+   Propriété margin: auto — centrage horizontal — slide 18 (CSS - Le modèle de boîte) */
+#table_container {
+    font-family: Calibri, Arial, sans-serif;
+    width: 60%;
+    margin: 40px auto;
+}
+
+/* Sélecteur de balise h2 — slide 13 (Sélecteurs CSS - sélecteur de balise)
+   Propriété text-align, color — slide 19 (CSS - Texte et couleurs) */
+h2 { text-align: center; color: #333; }
+
+/* Sélecteur de balise table — slide 13
+   Propriété border-collapse — slide 24 (CSS - Tableaux) */
+table { width: 100%; border-collapse: collapse; }
+
+/* Sélecteur groupé th, td — slide 14 (Sélecteurs CSS - sélecteur groupé)
+   Propriétés border, padding — slide 18 (CSS - Le modèle de boîte) */
+th, td { border: 1px solid #aaa; padding: 8px 12px; text-align: left; }
+
+/* Sélecteur descendant thead tr — slide 16 (Sélecteurs CSS - sélecteur descendant)
+   Propriétés background-color, color — slide 19 (CSS - Texte et couleurs) */
+thead tr { background-color: #4472C4; color: white; }
+
+/* Pseudo-classe :nth-child(even) — slide 17 (Sélecteurs CSS - pseudo-classes)
+   Lignes paires en bleu clair (alternance de couleur) */
+tbody tr:nth-child(even) { background-color: #dce6f1; }
+
+/* Pseudo-classe :hover — slide 17 (Sélecteurs CSS - pseudo-classes)
+   Surbrillance au survol de la souris */
+tbody tr:hover { background-color: #bdd7ee; }
+
+/* Sélecteurs de classe .col_number, .col_chkbox, .col_text — slide 13 (Sélecteurs CSS - sélecteur de classe) */
+.col_number { width: 40px; text-align: center; }
+.col_chkbox { width: 40px; text-align: center; }
+.col_text   { text-align: left; }

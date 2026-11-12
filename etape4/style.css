@@ -1,0 +1,78 @@
+/* TP4 - Etape 4 : Espace résumé */
+
+/* Sélecteur d'id #table_container — slide 15 (Sélecteurs CSS - sélecteur d'id)
+   font-family : liste de polices — slide 20 (CSS - Polices)
+   margin: auto : centrage horizontal — slide 18 (CSS - Le modèle de boîte)
+   box-shadow : ombre portée — slide 23 (CSS - Effets visuels) */
+#table_container {
+    width: 80%;
+    max-width: 900px;
+    margin: 40px auto;              /* centre le conteneur horizontalement */
+    padding: 20px;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    font-family: Calibri, Arial, sans-serif;   /* Calibri = première police */
+    font-size: 14px;
+    color: #333;
+}
+
+/* Sélecteur descendant — slide 16 (Sélecteurs CSS - sélecteur descendant)
+   border-collapse : supprime les doubles bordures — slide 24 (CSS - Tableaux) */
+#table_container table {
+    width: 100%;
+    border-collapse: collapse;      /* supprime les doubles bordures */
+}
+
+/* background-color, color — slide 19 (CSS - Texte et couleurs) */
+#table_container th {
+    background-color: #007bbd;
+    color: #fff;
+    padding: 10px;
+    text-align: center;
+    border: 1px solid #fff;
+}
+
+/* padding, border-bottom — slide 18 (CSS - Le modèle de boîte) */
+#table_container td {
+    padding: 10px;
+    border-bottom: 1px solid #e3e3e3;
+}
+
+/* Sélecteurs de classe — slide 13 (Sélecteurs CSS - sélecteur de classe) */
+.col_number {                       /* N° et Points : centrés, étroits */
+    width: 60px;
+    text-align: center;
+}
+
+.col_text {                         /* Nom et Prénom : alignés à gauche, larges */
+    text-align: left;
+}
+
+.col_chkbox {                       /* Select : checkbox centrée */
+    width: 60px;
+    text-align: center;
+}
+
+/* Espace résumé — sélecteur d'id #container_summary — slide 15 (Sélecteurs CSS - sélecteur d'id)
+   display: flex : mise en page flexbox — slide 25 (CSS - Flexbox)
+   justify-content: space-between : répartition gauche/droite — slide 25 */
+#container_summary {
+    display: flex;                  /* p1 à gauche, p3 à droite */
+    justify-content: space-between;
+    padding: 8px 10px;
+    background-color: #f0f0f0;
+    border-bottom: 1px solid #e3e3e3;
+}
+
+/* Sélecteur descendant #container_summary p — slide 16
+   margin: 0 : supprime la marge par défaut des paragraphes — slide 18 */
+#container_summary p {
+    margin: 0;
+}
+
+/* Sélecteur d'id #p2 — slide 15
+   flex-grow: 1 : occupe tout l'espace disponible au milieu — slide 25 (CSS - Flexbox) */
+#container_summary #p2 {
+    flex-grow: 1;                   /* p2 (vide) occupe l'espace du milieu */
+}

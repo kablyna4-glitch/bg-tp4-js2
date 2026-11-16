@@ -1,164 +1,183 @@
 "use strict";
+let lignes = 0;
 
-// Tableau d'objets — slide 40
-var persons = [
-    { nom: "nom1", prenom: "prenom1", points: 5 },
-    { nom: "nom2", prenom: "prenom2", points: 10 },
-    { nom: "nom3", prenom: "prenom3", points: 15 }
+
+const persons = [
+    { nom: "nom-1", prenom: "prenom-1", points: 5 },
+    { nom: "nom-2", prenom: "prenom-2", points: 10 },
+    { nom: "nom-3", prenom: "prenom-3", points: 15 }
 ];
 
 
-// Variables globales — slide 50-51
-var lignes       = 0;
-var total_points = 0;
-var triCroissant = true; // Variable d'état pour le tri (Bonus 2) — slide 37
+let total_points = 0;
 
-// ── doInsertRowTable ──────────────────────────────────────────────
-// Fonctions — slide 45-46
+// Insère UNE ligne dans le tableau (fonction avec paramètres : slide 45)
 function doInsertRowTable(num, nom, prenom, points) {
-    var tbody  = document.getElementById("table_body"); // getElementById — slide 61-64
-    var newRow = document.createElement("tr");           // createElement — slide 104
-    newRow.innerHTML =                                   // innerHTML — slide 91
-        '<td class="col_number">' + num + '</td>' +
-        '<td class="col_text">' + nom + '</td>' +
-        '<td class="col_text">' + prenom + '</td>' +
-        '<td class="col_text">' + points + '</td>' +
-        '<td class="col_chkbox"><input type="checkbox"/></td>';
-    tbody.appendChild(newRow);                           // appendChild — slide 103-105
+    // Récupérer le <tbody> par son identifiant (getElementById : slide 61)
+    const table = document.getElementById("table_body");
+
+    // Créer un élément <tr> à partir de zéro (createElement : slide 104)
+    const row = document.createElement("tr");
+
+    // Donner la valeur "row" à l'attribut class (setAttribute : slide 107)
+    row.setAttribute("class", "row");
+
+    // Créer les 5 colonnes <td> (createElement : slide 104)
+    const col1 = document.createElement("td");
+    const col2 = document.createElement("td");
+    const col3 = document.createElement("td");
+    const col4 = document.createElement("td");
+    const col5 = document.createElement("td");
+
+    // Remplir le contenu de chaque colonne (innerText : slide 91)
+    col1.innerText = num;
+    col2.innerText = nom;
+    col3.innerText = prenom;
+    col4.innerText = points;
+
+    
+    const chk = document.createElement("input");   // createElement : slide 104
+    chk.setAttribute("type", "checkbox");          // setAttribute : slide 107
+    // Fonctionnalité supplémentaire n°3 : surligner la ligne quand on coche la case
+    // (événement "change" avec addEventListener : slide 139 ; fonction fléchée : slide 46)
+    chk.addEventListener("change", () => highlightRow(chk));
+    col5.append(chk);                              // append : slide 98
+
+    // Affecter les classes CSS de chaque colonne (setAttribute : slide 107)
+    col1.setAttribute("class", "col_number");
+    col2.setAttribute("class", "col_text");
+    col3.setAttribute("class", "col_text");
+    col4.setAttribute("class", "col_number");
+    col5.setAttribute("class", "col_chkbox");
+
+    // Rajouter les colonnes à la ligne (append : slide 98)
+    row.append(col1, col2, col3, col4, col5);
+
+    // Rajouter la ligne au tableau (append : slide 98)
+    table.append(row);
 }
 
-// ── update_summary ────────────────────────────────────────────────
-// textContent — slide 91 ; getElementById — slide 61-64
-function update_summary() {
-    document.getElementById("nb_lignes").textContent = lignes + " ligne(s)";
-    document.getElementById("total_pts").textContent = "Total point(s) = " + total_points;
-}
 
-// ── doInsert ──────────────────────────────────────────────────────
 function doInsert(nom, prenom, points) {
-    lignes       = lignes + 1;              // Opérateurs arithmétiques — slide 41
-    total_points = total_points + parseInt(points);
-    doInsertRowTable(lignes, nom, prenom, points);
+    // Additionner les points au total (opérateur combiné += : slide 41)
+    total_points += points;
+
+    // Incrémenter le compteur de lignes (opérateur ++ : slide 41)
+    lignes++;
+    const num = lignes;
+
+    doInsertRowTable(num, nom, prenom, points);
+
     update_summary();
 }
 
-// ── doNewData ─────────────────────────────────────────────────────
-function doNewData() {
-    var nom    = document.getElementById("input_nom").value;    // .value — getElementById — slide 61-64
-    var prenom = document.getElementById("input_prenom").value;
-    var points = document.getElementById("input_points").value;
 
-    // Condition if...else — slide 42
-    if (nom === "" || prenom === "" || points === "") {
-        alert("Tous les champs doivent être remplis !"); // alert() — slide 34
+function update_summary() {
+    // Récupérer les éléments <p> par leur identifiant (getElementById : slide 61)
+    const element_lignes = document.getElementById("p1");
+    const element_points = document.getElementById("p3");
+
+    // Modifier leur contenu avec innerText (slide 91)
+    element_lignes.innerText = lignes + " ligne(s)";
+    element_points.innerText = "Total point(s)= " + total_points;
+}
+
+
+function doNewData() {
+    // Récupérer les champs de saisie par leur identifiant (getElementById : slide 61)
+    const elt_nom = document.getElementById("form_nom");
+    const elt_prenom = document.getElementById("form_prenom");
+    const elt_points = document.getElementById("form_points");
+
+    // Lire l'attribut value de chaque champ (propriété value d'un élément : slide 93)
+    const nom = elt_nom.value.trim();
+    const prenom = elt_prenom.value.trim();
+    // parseInt convertit le texte en entier (indiqué par l'énoncé du TP)
+    const points = parseInt(elt_points.value);
+
+    // Saisie contrôlée : if..else (slide 42), opérateurs logiques (slide 41)
+    if (nom === "" || prenom === "" || Number.isNaN(points)) {
+        // alert : boîte de dialogue du BOM (slide 116)
+        alert("Formulaire incomplet !");
+    } else {
+        // 1)  le tableau HTML
+        doInsert(nom, prenom, points);
+
+        // 2) le tableau d'objets "persons" 
+        persons.push({ nom: nom, prenom: prenom, points: points });
+
+        // 3) Vider les champs pour une autre saisie (propriété value : slide 93)
+        elt_nom.value = "";
+        elt_prenom.value = "";
+        elt_points.value = "";
+        elt_nom.focus();
+    }
+}
+
+// Supprime les lignes cochées 
+function deleteRow() {
+    
+    if (lignes === 0) {
+        alert("Le tableau est vide !");   // alert : slide 116
+        return;                            
+    }
+
+    // Étape 2 : récupérer le <tbody> (slide 61) et les checkbox cochées
+    // (querySelectorAll avec un sélecteur CSS : slides 76-77)
+    const table = document.getElementById("table_body");
+    const cochees = table.querySelectorAll(".col_chkbox input:checked");
+
+    // Étape 3 : aucune sélection ?
+    if (cochees.length === 0) {
+        alert("Sélectionnez au moins une ligne !");
         return;
     }
-    doInsert(nom, prenom, points);
-    persons.push({ nom: nom, prenom: prenom, points: parseInt(points) }); // push() — slide 38
-    document.getElementById("input_nom").value    = "";
-    document.getElementById("input_prenom").value = "";
-    document.getElementById("input_points").value = "";
-}
 
-// ── deleteRow ─────────────────────────────────────────────────────
-function deleteRow() {
-    var tbody = document.getElementById("table_body"); // getElementById — slide 61-64
-    var rows  = tbody.getElementsByTagName("tr");      // getElementsByTagName — slide 66-69
+    // Étape 4 : confirmation (confirm : méthode de window, BOM : slides 111-121)
+    if (!confirm("Supprimer " + cochees.length + " ligne(s) ?")) {
+        return;   
+    }
 
-    // Boucle for à rebours — slide 44 (Les Boucles)
-    for (var i = rows.length - 1; i >= 0; i--) {
-        var row      = rows[i];
-        var checkbox = row.querySelector("input[type='checkbox']"); // querySelector — slide 74-76
+    // Étape 5 : récupérer toutes les lignes du tableau (slides 76-77)
+    const rows = table.querySelectorAll("tr");
 
-        // Condition if — slide 42
-        if (checkbox !== null && checkbox.checked) {
-            var pts = parseInt(row.getElementsByTagName("td")[3].textContent); // getElementsByTagName — slide 66-69
-            total_points = total_points - pts; // Opérateurs arithmétiques — slide 41
-            lignes       = lignes - 1;
-            persons.splice(i, 1);              // splice() — slide 38 (Méthodes de tableau)
-            tbody.removeChild(row);            // removeChild() — slide 100-101
+    // Étape 6 : parcourir les lignes À L'ENVERS (boucle for : slide 44), pour que
+    // splice ne décale pas les indices des lignes restant à traiter
+    for (let i = rows.length - 1; i >= 0; i--) {
+        const chk = rows[i].querySelector(".col_chkbox input");
+        if (chk.checked) {
+            // Points de la 4e cellule (children : slide 86), convertis en entier
+            const points = parseInt(rows[i].children[3].innerText);
+            total_points -= points;   // opérateur combiné : slide 41
+            lignes--;                 // décrémenter le compteur
+            rows[i].remove();         // supprimer la ligne du DOM (remove : slide 100)
+            persons.splice(i, 1);     // supprimer la même entrée dans "persons"
         }
     }
-    // Renumérotation — boucle for (slide 44) + textContent (slide 91)
-    var remainingRows = tbody.getElementsByTagName("tr");
-    for (var j = 0; j < remainingRows.length; j++) {
-        remainingRows[j].getElementsByTagName("td")[0].textContent = j + 1;
-    }
+
+    // Renuméroter les lignes restantes pour garder la colonne N° cohérente
+    // (forEach + fonction fléchée : slides 44 et 46 ; innerText : slide 91)
+    table.querySelectorAll("tr").forEach((row, index) => {
+        row.children[0].innerText = index + 1;
+    });
+
+    // Décocher la case "tout sélectionner" (fonctionnalité supplémentaire n°2)
+    document.getElementById("chk_all").checked = false;
+
+    // Étape 7 : message de succès et mise à jour du résumé
+    alert(cochees.length + " ligne(s) supprimée(s) !");
     update_summary();
 }
 
-// ── init ──────────────────────────────────────────────────────────
+
 function init() {
-    lignes = 0; total_points = 0;
-    for (var i = 0; i < persons.length; i++) { // Boucle for — slide 44
-        doInsert(persons[i].nom, persons[i].prenom, persons[i].points);
+    for (const person of persons) {
+        doInsert(person.nom, person.prenom, person.points);
     }
 }
-
-// ── consoleTableau ────────────────────────────────────────────────
 function consoleTableau() {
-    console.log("Contenu du tableau persons :", persons); // console.log — slide 33-34
+    console.table(persons);
 }
 
-// ══════════════════════════════════════════════════════════════════
-// FONCTIONNALITÉ BONUS 1 : Sélectionner / Désélectionner tout
-// querySelectorAll — slide 77-78 ; classList — slide 108
-// ══════════════════════════════════════════════════════════════════
-function toggleSelectAll() {
-    var checkboxes = document.querySelectorAll("#table_body input[type='checkbox']"); // querySelectorAll — slide 77-78
-    var btn        = document.querySelector(".btn-select");                           // querySelector — slide 74-76
-
-    var toutesCoches = true;
-    for (var i = 0; i < checkboxes.length; i++) { // Boucle for — slide 44
-        if (!checkboxes[i].checked) { toutesCoches = false; break; } // if — slide 42
-    }
-    for (var j = 0; j < checkboxes.length; j++) {
-        checkboxes[j].checked = !toutesCoches; // Opérateur logique ! — slide 41
-    }
-    btn.textContent = toutesCoches ? "Tout sélectionner" : "Tout désélectionner"; // Ternaire — slide 42
-}
-
-// ══════════════════════════════════════════════════════════════════
-// FONCTIONNALITÉ BONUS 2 : Tri par Points (croissant / décroissant)
-// sort() — slide 38 ; fonction anonyme — slide 46
-// ══════════════════════════════════════════════════════════════════
-function trierParPoints() {
-    // Méthode sort() avec fonction de comparaison anonyme — slide 38, 46
-    persons.sort(function(a, b) {
-        if (triCroissant) return a.points - b.points; // Opérateurs — slide 41
-        else              return b.points - a.points;
-    });
-    triCroissant = !triCroissant; // Opérateur logique ! — slide 41
-
-    // Vider et reconstruire le tbody — innerHTML — slide 91 ; getElementById — slide 61-64
-    document.getElementById("table_body").innerHTML = "";
-    lignes = 0; total_points = 0;
-    for (var i = 0; i < persons.length; i++) { // Boucle for — slide 44
-        doInsert(persons[i].nom, persons[i].prenom, persons[i].points);
-    }
-}
-
-// ══════════════════════════════════════════════════════════════════
-// FONCTIONNALITÉ BONUS 3 : Filtrage en temps réel (nom ou prénom)
-// classList.add / classList.remove — slide 108 ; getElementsByTagName — slide 66-69
-// ══════════════════════════════════════════════════════════════════
-function filtrerTableau() {
-    // Lire le champ de recherche — getElementById — slide 61-64
-    var recherche = document.getElementById("input_recherche").value.toLowerCase();
-    var rows      = document.getElementById("table_body").getElementsByTagName("tr"); // slide 66-69
-
-    for (var i = 0; i < rows.length; i++) { // Boucle for — slide 44
-        var cells  = rows[i].getElementsByTagName("td");
-        var nom    = cells[1].textContent.toLowerCase(); // textContent — slide 91
-        var prenom = cells[2].textContent.toLowerCase();
-
-        // indexOf() — méthode de String — slide 37 ; if — slide 42
-        if (nom.indexOf(recherche) !== -1 || prenom.indexOf(recherche) !== -1) {
-            rows[i].classList.remove("hidden-row"); // classList.remove — slide 108
-        } else {
-            rows[i].classList.add("hidden-row");    // classList.add — slide 108
-        }
-    }
-}
 
 init();

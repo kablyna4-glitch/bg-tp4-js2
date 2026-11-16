@@ -1,84 +1,122 @@
-"use strict";
+"use strict"; 
 
-// Tableau d'objets — slide 40
-var persons = [
-    { nom: "nom1", prenom: "prenom1", points: 5 },
-    { nom: "nom2", prenom: "prenom2", points: 10 },
-    { nom: "nom3", prenom: "prenom3", points: 15 }
+let lignes = 0;
+
+const persons = [
+    { nom: "nom-1", prenom: "prenom-1", points: 5 },
+    { nom: "nom-2", prenom: "prenom-2", points: 10 },
+    { nom: "nom-3", prenom: "prenom-3", points: 15 }
 ];
 
+// Total des points, initialisé à 0 (variable globale : slides 37 et 50-51)
+let total_points = 0;
 
-// Variables globales — slide 50-51
-var lignes       = 0;
-var total_points = 0;
-
+// Insère UNE ligne dans le tableau (fonction avec paramètres : slide 45)
 function doInsertRowTable(num, nom, prenom, points) {
-    // getElementById — slide 61-64 ; createElement — slide 104
-    var tbody  = document.getElementById("table_body");
-    var newRow = document.createElement("tr");
-    // innerHTML — slide 91
-    newRow.innerHTML =
-        '<td class="col_number">' + num + '</td>' +
-        '<td class="col_text">' + nom + '</td>' +
-        '<td class="col_text">' + prenom + '</td>' +
-        '<td class="col_text">' + points + '</td>' +
-        '<td class="col_chkbox"><input type="checkbox"/></td>';
-    // appendChild — slide 103-105
-    tbody.appendChild(newRow);
+    // Récupérer le <tbody> par son identifiant (getElementById : slide 61)
+    const table = document.getElementById("table_body");
+
+    // Créer un élément <tr> à partir de zéro (createElement : slide 104)
+    const row = document.createElement("tr");
+
+    // Donner la valeur "row" à l'attribut class (setAttribute : slide 107)
+    row.setAttribute("class", "row");
+
+    // Créer les 5 colonnes <td> (createElement : slide 104)
+    const col1 = document.createElement("td");
+    const col2 = document.createElement("td");
+    const col3 = document.createElement("td");
+    const col4 = document.createElement("td");
+    const col5 = document.createElement("td");
+
+    // Remplir le contenu de chaque colonne (innerText : slide 91)
+    col1.innerText = num;
+    col2.innerText = nom;
+    col3.innerText = prenom;
+    col4.innerText = points;
+
+    // La dernière colonne contient un <input type="checkbox">
+    const chk = document.createElement("input");   // createElement : slide 104
+    chk.setAttribute("type", "checkbox");          // setAttribute : slide 107
+    col5.append(chk);                              // append : slide 98
+
+    // Affecter les classes CSS de chaque colonne (setAttribute : slide 107)
+    col1.setAttribute("class", "col_number");
+    col2.setAttribute("class", "col_text");
+    col3.setAttribute("class", "col_text");
+    col4.setAttribute("class", "col_number");
+    col5.setAttribute("class", "col_chkbox");
+
+    // Rajouter les colonnes à la ligne (append : slide 98)
+    row.append(col1, col2, col3, col4, col5);
+
+    // Rajouter la ligne au tableau (append : slide 98)
+    table.append(row);
 }
 
-// textContent — slide 91 ; getElementById — slide 61-64
-function update_summary() {
-    document.getElementById("nb_lignes").textContent = lignes + " ligne(s)";
-    document.getElementById("total_pts").textContent = "Total point(s) = " + total_points;
-}
 
 function doInsert(nom, prenom, points) {
-    // Opérateurs arithmétiques — slide 41
-    lignes       = lignes + 1;
-    total_points = total_points + parseInt(points);
-    doInsertRowTable(lignes, nom, prenom, points);
+    
+    total_points += points;
+
+    lignes++;
+    const num = lignes;
+
+    doInsertRowTable(num, nom, prenom, points);
+
     update_summary();
 }
 
-// Ici on lit les champs de saisie, on contrôle et on insère.
+function update_summary() {
+    // Récupérer les éléments <p> par leur identifiant (getElementById : slide 61)
+    const element_lignes = document.getElementById("p1");
+    const element_points = document.getElementById("p3");
+
+    // Modifier leur contenu avec innerText (slide 91)
+    element_lignes.innerText = lignes + " ligne(s)";
+    element_points.innerText = "Total point(s)= " + total_points;
+}
+
 function doNewData() {
-    // Propriété .value des inputs — getElementById — slide 61-64
-    var nom    = document.getElementById("input_nom").value;
-    var prenom = document.getElementById("input_prenom").value;
-    var points = document.getElementById("input_points").value;
+    // Récupérer les champs de saisie par leur identifiant (getElementById : slide 61)
+    const elt_nom = document.getElementById("form_nom");
+    const elt_prenom = document.getElementById("form_prenom");
+    const elt_points = document.getElementById("form_points");
 
-    // Ici on vérifie que les champs ne sont pas vides.
-    // Condition if...else — slide 42 (Les Conditions)
-    if (nom === "" || prenom === "" || points === "") {
-        // alert() — slide 34 (D'autres sorties possibles)
-        alert("Tous les champs doivent être remplis !");
-        return; // Fonctions — slide 45
+    // Lire l'attribut value de chaque champ (propriété value d'un élément : slide 93)
+    const nom = elt_nom.value.trim();
+    const prenom = elt_prenom.value.trim();
+    
+    // parseInt convertit le texte en entier
+    const points = parseInt(elt_points.value);
+
+    // Saisie : if..else (slide 42)
+    if (nom === "" || prenom === "" || Number.isNaN(points)) {
+        // alert : boîte de dialogue du BOM (slide 116)
+        alert("Formulaire incomplet !");
+    } else {
+       
+        doInsert(nom, prenom, points);
+
+        
+        persons.push({ nom: nom, prenom: prenom, points: points });
+
+        
+        elt_nom.value = "";
+        elt_prenom.value = "";
+        elt_points.value = "";
+        elt_nom.focus();
     }
-
-    doInsert(nom, prenom, points);
-
-    // Ici on insère dans le tableau persons avec push().
-    // Méthodes de tableau (push) — slide 38 (Types Complexes — Les Tableaux)
-    persons.push({ nom: nom, prenom: prenom, points: parseInt(points) });
-
-    // Ici on vide les champs — propriété .value — getElementById — slide 61-64
-    document.getElementById("input_nom").value    = "";
-    document.getElementById("input_prenom").value = "";
-    document.getElementById("input_points").value = "";
 }
 
 function init() {
-    lignes = 0; total_points = 0;
-    // Boucle for — slide 44
-    for (var i = 0; i < persons.length; i++) {
-        doInsert(persons[i].nom, persons[i].prenom, persons[i].points);
+    for (const person of persons) {
+        doInsert(person.nom, person.prenom, person.points);
     }
 }
 
-// console.log — slide 33-34
 function consoleTableau() {
-    console.log("Contenu du tableau persons :", persons);
+    console.table(persons);
 }
 
 init();
